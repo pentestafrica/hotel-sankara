@@ -17,10 +17,21 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///hot
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'jwt-secret-key')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+app.config['JWT_IDENTITY_CLAIM'] = 'sub'
 
 # Initialize extensions
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
+
+# JWT configuration
+@jwt.user_identity_loader
+def user_identity_lookup(user):
+    return str(user)
+
+@jwt.user_lookup_loader
+def user_lookup_callback(_jwt_header, jwt_data):
+    identity = jwt_data["sub"]
+    return identity
 
 # Import routes after db initialization to avoid circular imports
 from routes import *
