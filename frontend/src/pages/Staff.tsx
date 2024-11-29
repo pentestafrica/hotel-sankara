@@ -125,7 +125,8 @@ const Staff = () => {
                 <Box>
                   <Chip
                     label={employee.status === 'active' ? 'Actif' : employee.status === 'on_leave' ? 'En congé' : 'Inactif'}
-                    color={getStatusColor(employee.status) as any}
+                    color={getStatusColor(employee.status)}
+                    variant="filled"
                     size="small"
                   />
                 </Box>

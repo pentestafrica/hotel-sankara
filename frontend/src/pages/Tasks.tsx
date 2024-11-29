@@ -153,12 +153,14 @@ const Tasks = () => {
                 <Box sx={{ display: 'flex', gap: 1 }}>
                   <Chip
                     label={task.status}
-                    color={getStatusColor(task.status) as any}
+                    color={getStatusColor(task.status)}
+                    variant="filled"
                     size="small"
                   />
                   <Chip
                     label={task.priority}
-                    color={getPriorityColor(task.priority) as any}
+                    color={getPriorityColor(task.priority)}
+                    variant="filled"
                     size="small"
                   />
                 </Box>

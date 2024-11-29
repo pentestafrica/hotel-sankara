@@ -116,7 +116,8 @@ const Rooms = () => {
                   <Chip
                     icon={getStatusIcon(room.status)}
                     label={room.status}
-                    color={getStatusColor(room.status) as any}
+                    color={getStatusColor(room.status)}
+                    variant="filled"
                     size="small"
                   />
                 </Box>

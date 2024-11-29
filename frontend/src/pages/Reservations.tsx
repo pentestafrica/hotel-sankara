@@ -127,7 +127,8 @@ const Reservations = () => {
                 <TableCell>
                   <Chip
                     label={getStatusLabel(reservation.status)}
-                    color={getStatusColor(reservation.status) as any}
+                    color={getStatusColor(reservation.status)}
+                    variant="filled"
                     size="small"
                   />
                 </TableCell>
