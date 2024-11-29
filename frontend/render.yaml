@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: hotel-sankara-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: NODE_VERSION
+        value: 16.14.0
+      - key: CI
+        value: false
