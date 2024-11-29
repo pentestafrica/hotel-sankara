@@ -33,6 +33,26 @@ def user_lookup_callback(_jwt_header, jwt_data):
     identity = jwt_data["sub"]
     return identity
 
+# Route racine
+@app.route('/')
+def home():
+    return jsonify({
+        "message": "Bienvenue sur l'API Hotel Sankara",
+        "version": "1.0",
+        "endpoints": {
+            "auth": {
+                "login": "/api/auth/login",
+                "register": "/api/auth/register"
+            },
+            "resources": {
+                "rooms": "/api/rooms",
+                "employees": "/api/employees",
+                "tasks": "/api/tasks",
+                "schedules": "/api/schedules"
+            }
+        }
+    })
+
 # Import routes after db initialization to avoid circular imports
 from routes import *
 from auth import *

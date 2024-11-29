@@ -2,13 +2,16 @@ services:
   - type: web
     name: hotel-sankara-api
     env: python
-    buildCommand: cd backend && pip install -r requirements.txt
-    startCommand: cd backend && python -m gunicorn --chdir backend app:app
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: gunicorn --chdir backend wsgi:app
+    rootDir: .
     envVars:
       - key: PYTHON_VERSION
         value: 3.8.0
       - key: FLASK_ENV
         value: production
+      - key: PORT
+        value: 8080
 
   - type: web
     name: hotel-sankara-frontend
