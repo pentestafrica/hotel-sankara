@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: hotel-sankara-frontend
+    name: sankara-hotel-web
     env: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./build
