@@ -19,7 +19,10 @@ def login():
     if not employee or not check_password_hash(employee.password_hash, password):
         return jsonify({"msg": "Bad email or password"}), 401
 
-    access_token = create_access_token(identity=employee.id)
+    # Convertir explicitement l'ID en string
+    employee_id = str(employee.id)
+    access_token = create_access_token(identity=employee_id)
+    
     return jsonify({
         "access_token": access_token,
         "user": {
