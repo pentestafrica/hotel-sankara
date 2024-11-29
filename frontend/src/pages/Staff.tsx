@@ -19,6 +19,8 @@ import {
   Phone as PhoneIcon,
 } from '@mui/icons-material';
 
+type ChipColor = 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+
 // Mock data - will be replaced with API data
 const staff = [
   {
@@ -42,7 +44,7 @@ const staff = [
   // Add more staff members...
 ];
 
-const getStatusColor = (status: string) => {
+const getStatusColor = (status: string): ChipColor => {
   switch (status) {
     case 'active':
       return 'success';
@@ -128,6 +130,7 @@ const Staff = () => {
                     color={getStatusColor(employee.status)}
                     variant="filled"
                     size="small"
+                    sx={{ borderRadius: 1 }}
                   />
                 </Box>
               </CardContent>

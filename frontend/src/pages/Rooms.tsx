@@ -11,51 +11,88 @@ import {
   TextField,
   InputAdornment,
 } from '@mui/material';
+import type { ChipTypeMap } from '@mui/material/Chip';
+import type { DefaultComponentProps } from '@mui/material/OverridableComponent';
 import {
   Search as SearchIcon,
   Edit as EditIcon,
-  CheckCircle as CheckCircleIcon,
-  Warning as WarningIcon,
-  Block as BlockIcon,
-  CleaningServices as CleaningServicesIcon,
+  CleaningServices as CleaningIcon,
+  Construction as MaintenanceIcon,
+  CheckCircle as AvailableIcon,
+  DoNotDisturb as OccupiedIcon,
+  Warning as MaintenanceNeededIcon,
 } from '@mui/icons-material';
+
+type ChipPropsType = DefaultComponentProps<ChipTypeMap<{}, "div">>;
+type ChipColorType = NonNullable<ChipPropsType['color']>;
 
 // Mock data - will be replaced with API data
 const rooms = [
-  { id: 101, type: 'Standard', status: 'available', floor: 1, price: 100 },
-  { id: 102, type: 'Deluxe', status: 'occupied', floor: 1, price: 150 },
-  { id: 103, type: 'Suite', status: 'cleaning', floor: 1, price: 200 },
-  { id: 201, type: 'Standard', status: 'maintenance', floor: 2, price: 100 },
-  // Add more rooms...
+  {
+    id: 1,
+    number: '101',
+    type: 'Standard',
+    status: 'available',
+    floor: '1st',
+    price: 100,
+    capacity: 2,
+  },
+  {
+    id: 2,
+    number: '102',
+    type: 'Deluxe',
+    status: 'occupied',
+    floor: '1st',
+    price: 150,
+    capacity: 2,
+  },
+  {
+    id: 3,
+    number: '201',
+    type: 'Suite',
+    status: 'maintenance',
+    floor: '2nd',
+    price: 200,
+    capacity: 4,
+  },
 ];
 
-const getStatusColor = (status: string) => {
+const getStatusIcon = (status: string): React.ReactElement => {
+  switch (status) {
+    case 'available':
+      return <AvailableIcon />;
+    case 'occupied':
+      return <OccupiedIcon />;
+    case 'maintenance':
+      return <MaintenanceNeededIcon />;
+    default:
+      return <AvailableIcon />;  // Retourner une icône par défaut au lieu de null
+  }
+};
+
+const getStatusColor = (status: string): ChipColorType => {
   switch (status) {
     case 'available':
       return 'success';
     case 'occupied':
       return 'error';
-    case 'cleaning':
-      return 'warning';
     case 'maintenance':
-      return 'default';
+      return 'warning';
     default:
       return 'default';
   }
 };
 
-const getStatusIcon = (status: string) => {
+const getStatusLabel = (status: string): string => {
   switch (status) {
     case 'available':
-      return <CheckCircleIcon />;
+      return 'Disponible';
     case 'occupied':
-      return <BlockIcon />;
-    case 'cleaning':
-      return <CleaningServicesIcon />;
+      return 'Occupée';
     case 'maintenance':
-      return <WarningIcon />;
+      return 'En maintenance';
     default:
-      return null;
+      return status;
   }
 };
 
@@ -92,33 +129,55 @@ const Rooms = () => {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                  <Typography variant="h5">
-                    Chambre {room.id}
+                  <Typography variant="h6">
+                    Chambre {room.number}
                   </Typography>
-                  <IconButton size="small">
-                    <EditIcon />
-                  </IconButton>
+                  <Box>
+                    <IconButton
+                      size="small"
+                      color="primary"
+                      sx={{ mr: 1 }}
+                      title="Nettoyage"
+                    >
+                      <CleaningIcon />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      color="primary"
+                      sx={{ mr: 1 }}
+                      title="Maintenance"
+                    >
+                      <MaintenanceIcon />
+                    </IconButton>
+                    <IconButton size="small">
+                      <EditIcon />
+                    </IconButton>
+                  </Box>
                 </Box>
 
-                <Box sx={{ mb: 2 }}>
-                  <Typography color="textSecondary" gutterBottom>
-                    Type: {room.type}
-                  </Typography>
-                  <Typography color="textSecondary" gutterBottom>
-                    Étage: {room.floor}
-                  </Typography>
-                  <Typography color="textSecondary" gutterBottom>
-                    Prix: {room.price}€/nuit
-                  </Typography>
-                </Box>
+                <Typography variant="body2" sx={{ mb: 2 }}>
+                  Type: {room.type}
+                </Typography>
+
+                <Typography variant="body2" sx={{ mb: 2 }}>
+                  Étage: {room.floor}
+                </Typography>
+
+                <Typography variant="body2" sx={{ mb: 2 }}>
+                  Capacité: {room.capacity} personnes
+                </Typography>
+
+                <Typography variant="body2" sx={{ mb: 2 }}>
+                  Prix: {room.price}€/nuit
+                </Typography>
 
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Chip
                     icon={getStatusIcon(room.status)}
-                    label={room.status}
+                    label={getStatusLabel(room.status)}
                     color={getStatusColor(room.status)}
-                    variant="filled"
                     size="small"
+                    sx={{ borderRadius: 1 }}
                   />
                 </Box>
               </CardContent>

@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Configuration
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
@@ -24,6 +24,7 @@ jwt = JWTManager(app)
 
 # Import routes after db initialization to avoid circular imports
 from routes import *
+from auth import *
 
 if __name__ == '__main__':
     with app.app_context():

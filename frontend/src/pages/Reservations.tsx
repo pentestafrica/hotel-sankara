@@ -2,75 +2,77 @@ import React from 'react';
 import {
   Box,
   Typography,
-  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Paper,
   Chip,
   IconButton,
   Button,
   TextField,
   InputAdornment,
 } from '@mui/material';
+import type { ChipTypeMap } from '@mui/material/Chip';
+import type { DefaultComponentProps } from '@mui/material/OverridableComponent';
 import {
   Search as SearchIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
 } from '@mui/icons-material';
 
+type ChipPropsType = DefaultComponentProps<ChipTypeMap<{}, "div">>;
+type ChipColorType = NonNullable<ChipPropsType['color']>;
+
 // Mock data - will be replaced with API data
 const reservations = [
   {
     id: 1,
-    guestName: 'Alice Johnson',
+    guest: 'John Doe',
     roomNumber: '101',
-    checkIn: '2024-02-10',
-    checkOut: '2024-02-15',
+    checkIn: '2024-02-15',
+    checkOut: '2024-02-20',
     status: 'confirmed',
-    phone: '+1234567890',
+    guests: 2,
+    amount: 500,
   },
   {
     id: 2,
-    guestName: 'Bob Wilson',
-    roomNumber: '202',
-    checkIn: '2024-02-12',
-    checkOut: '2024-02-14',
-    status: 'checked_in',
-    phone: '+1234567891',
+    guest: 'Jane Smith',
+    roomNumber: '102',
+    checkIn: '2024-02-18',
+    checkOut: '2024-02-22',
+    status: 'pending',
+    guests: 1,
+    amount: 400,
   },
-  // Add more reservations...
 ];
 
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case 'confirmed':
-      return 'primary';
-    case 'checked_in':
-      return 'success';
-    case 'checked_out':
-      return 'default';
-    case 'cancelled':
-      return 'error';
-    default:
-      return 'default';
-  }
-};
-
-const getStatusLabel = (status: string) => {
+const getStatusLabel = (status: string): string => {
   switch (status) {
     case 'confirmed':
       return 'Confirmée';
-    case 'checked_in':
-      return 'Enregistré';
-    case 'checked_out':
-      return 'Terminée';
+    case 'pending':
+      return 'En attente';
     case 'cancelled':
       return 'Annulée';
     default:
       return status;
+  }
+};
+
+const getStatusColor = (status: string): ChipColorType => {
+  switch (status) {
+    case 'confirmed':
+      return 'success';
+    case 'pending':
+      return 'warning';
+    case 'cancelled':
+      return 'error';
+    default:
+      return 'default';
   }
 };
 
@@ -105,12 +107,12 @@ const Reservations = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
               <TableCell>Client</TableCell>
               <TableCell>Chambre</TableCell>
               <TableCell>Arrivée</TableCell>
               <TableCell>Départ</TableCell>
-              <TableCell>Téléphone</TableCell>
+              <TableCell>Personnes</TableCell>
+              <TableCell>Montant</TableCell>
               <TableCell>Statut</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
@@ -118,22 +120,22 @@ const Reservations = () => {
           <TableBody>
             {reservations.map((reservation) => (
               <TableRow key={reservation.id}>
-                <TableCell>{reservation.id}</TableCell>
-                <TableCell>{reservation.guestName}</TableCell>
+                <TableCell>{reservation.guest}</TableCell>
                 <TableCell>{reservation.roomNumber}</TableCell>
                 <TableCell>{reservation.checkIn}</TableCell>
                 <TableCell>{reservation.checkOut}</TableCell>
-                <TableCell>{reservation.phone}</TableCell>
+                <TableCell>{reservation.guests}</TableCell>
+                <TableCell>{reservation.amount}€</TableCell>
                 <TableCell>
                   <Chip
                     label={getStatusLabel(reservation.status)}
                     color={getStatusColor(reservation.status)}
-                    variant="filled"
                     size="small"
+                    sx={{ borderRadius: 1 }}
                   />
                 </TableCell>
                 <TableCell>
-                  <IconButton size="small" color="primary">
+                  <IconButton size="small">
                     <EditIcon />
                   </IconButton>
                   <IconButton size="small" color="error">
