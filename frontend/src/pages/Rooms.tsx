@@ -17,7 +17,7 @@ import {
   CheckCircle as CheckCircleIcon,
   Warning as WarningIcon,
   Block as BlockIcon,
-  Cleaning as CleaningIcon,
+  CleaningServices as CleaningServicesIcon,
 } from '@mui/icons-material';
 
 // Mock data - will be replaced with API data
@@ -51,7 +51,7 @@ const getStatusIcon = (status: string) => {
     case 'occupied':
       return <BlockIcon />;
     case 'cleaning':
-      return <CleaningIcon />;
+      return <CleaningServicesIcon />;
     case 'maintenance':
       return <WarningIcon />;
     default:
